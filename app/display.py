@@ -1,17 +1,19 @@
 from abc import ABC, abstractmethod
 
+from app.book import Book
 
-class DisplayStrategy(ABC):
+
+class Display(ABC):
     @abstractmethod
-    def display(self, content: str) -> None:
+    def display(self, book: "Book") -> None:
         pass
 
 
-class ConsoleDisplayStrategy(DisplayStrategy):
-    def display(self, content: str) -> None:
-        print(content)
+class ConsoleDisplay(Display):
+    def display(self, book: "Book") -> None:
+        print(book.content)
 
 
-class ReverseDisplayStrategy(DisplayStrategy):
-    def display(self, content: str) -> None:
-        print(content[::-1])
+class ReverseDisplay(Display):
+    def display(self, book: "Book") -> None:
+        print(book.content[::-1])

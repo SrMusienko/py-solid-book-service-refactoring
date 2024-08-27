@@ -2,23 +2,25 @@ import json
 import xml.etree.ElementTree as ET  # noqa: N817
 from abc import ABC, abstractmethod
 
+from app.book import Book
 
-class SerializeStrategy(ABC):
+
+class Serializer(ABC):
     @abstractmethod
-    def serialize(self, content: str, title: str) -> str:
+    def serialize(self, book: "Book") -> str:
         pass
 
 
-class JsonSerializeStrategy(SerializeStrategy):
-    def serialize(self, content: str, title: str) -> str:
-        return json.dumps({"title": title, "content": content})
+class JsonSerializer(Serializer):
+    def serialize(self, book: "Book") -> str:
+        return json.dumps({"title": book.title, "content": book.content})
 
 
-class XmlSerializeStrategy(SerializeStrategy):
-    def serialize(self, content: str, title: str) -> str:
+class XmlSerializer(Serializer):
+    def serialize(self, book: "Book") -> str:
         root = ET.Element("book")
-        title_element = ET.SubElement(root, "title")
-        title_element.text = title
-        content_element = ET.SubElement(root, "content")
-        content_element.text = content
+        title = ET.SubElement(root, "title")
+        title.text = book.title
+        content = ET.SubElement(root, "content")
+        content.text = book.content
         return ET.tostring(root, encoding="unicode")
